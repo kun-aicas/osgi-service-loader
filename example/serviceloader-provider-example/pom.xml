@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.example</groupId>
+    <artifactId>example</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <name>OSGi Serviceloader Provider Example</name>
+  <groupId>com.aicas.osgi.example</groupId>
+  <artifactId>serviceloader-provider-example</artifactId>
+  <packaging>bundle</packaging>
+  <description>
+    Example provider bundle whose service implementation is registered in the
+    OSGi service registry through the osgi.serviceloader.registrar extender and
+    can also be loaded using the Java ServiceLoader API.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>
+              com.aicas.osgi.spi.example.spi
+            </Import-Package>
+            <Private-Package>
+              com.aicas.osgi.spi.example.provider
+            </Private-Package>
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.aicas.osgi.spi.example.spi.SPIProvider</Provide-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>distribution-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/distribution.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi</groupId>
+      <artifactId>serviceloader-mediator</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi</groupId>
+    <artifactId>service-loader</artifactId>
+    <version>${revision}</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.aicas.osgi.testbundle</groupId>
+  <artifactId>testbundles</artifactId>
+  <packaging>pom</packaging>
+  <name>ServiceLoader integration-test bundles</name>
+
+  <modules>
+    <module>serviceloader-embedded-consumer</module>
+    <module>serviceloader-embedded-consumer-bundle</module>
+    <module>serviceloader-unprocessed-consumer</module>
+    <module>serviceloader-consumer-update-example</module>
+    <module>serviceloader-provider-failure-example</module>
+    <module>serviceloader-provider-moduleinfo-update-example</module>
+    <module>serviceloader-consumer-fragment</module>
+    <module>serviceloader-consumer-fragment-host</module>
+    <module>serviceloader-two-service-provider-fragment</module>
+    <module>serviceloader-two-service-provider-host</module>
+    <module>serviceloader-provider-update-example</module>
+  </modules>
+</project>

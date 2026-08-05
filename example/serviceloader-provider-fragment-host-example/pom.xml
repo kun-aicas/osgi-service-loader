@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.example</groupId>
+    <artifactId>example</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>serviceloader-provider-fragment-host-example</artifactId>
+  <packaging>bundle</packaging>
+  <name>OSGi ServiceLoader Provider Fragment Host Example</name>
+  <description>
+    Provider host containing only a META-INF/services declaration. Its OSGi
+    ServiceLoader provider capability is contributed by an attached fragment.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Private-Package>
+              com.aicas.osgi.spi.example.provider
+            </Private-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

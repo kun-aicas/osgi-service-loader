@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.testbundle</groupId>
+    <artifactId>testbundles</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>serviceloader-consumer-update-example</artifactId>
+  <packaging>bundle</packaging>
+  <name>OSGi ServiceLoader consumer update test bundle</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>com.aicas.osgi.example.serviceloader-consumer-example</Bundle-SymbolicName>
+            <Bundle-Version>2.0.0</Bundle-Version>
+            <Import-Package>org.osgi.framework</Import-Package>
+            <Bundle-Activator>com.aicas.osgi.spi.example.consumer.UpdatedConsumerActivator</Bundle-Activator>
+            <Private-Package>com.aicas.osgi.spi.example.consumer</Private-Package>
+            <Require-Capability>osgi.serviceloader; filter:="(osgi.serviceloader=java.lang.Runnable)";cardinality:=multiple;resolution:=optional,osgi.extender; filter:="(osgi.extender=osgi.serviceloader.processor)"</Require-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <version>${osgi.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
