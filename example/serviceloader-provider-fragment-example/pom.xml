@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.example</groupId>
+    <artifactId>example</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <artifactId>serviceloader-provider-fragment-example</artifactId>
+  <packaging>bundle</packaging>
+  <name>OSGi ServiceLoader Provider Fragment Example</name>
+  <description>
+    Fragment that contributes an osgi.serviceloader provider capability to a
+    provider host bundle.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Fragment-Host>com.aicas.osgi.example.serviceloader-provider-fragment-host-example</Fragment-Host>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.aicas.osgi.spi.example.spi.SPIProvider</Provide-Capability>
+            <_fixupmessages>
+              osgi.serviceloader capability found with no 'register:' directive;restrict:=warning;is:=ignore,
+              The JAR is empty;restrict:=warning;is:=ignore
+            </_fixupmessages>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-provider-fragment-host-example</artifactId>
+      <version>${revision}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

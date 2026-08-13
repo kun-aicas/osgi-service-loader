@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.testbundle</groupId>
+    <artifactId>testbundles</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <name>OSGi ServiceLoader provider update test bundle</name>
+  <artifactId>serviceloader-provider-update-example</artifactId>
+  <packaging>bundle</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>com.aicas.osgi.example.serviceloader-provider-example</Bundle-SymbolicName>
+            <Bundle-Version>2.0.0</Bundle-Version>
+            <Import-Package>com.aicas.osgi.spi.example.spi</Import-Package>
+            <Private-Package>com.aicas.osgi.spi.example.provider</Private-Package>
+            <Require-Capability>osgi.extender; filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
+            <Provide-Capability>osgi.serviceloader; osgi.serviceloader=com.aicas.osgi.spi.example.spi.SPIProvider</Provide-Capability>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi</groupId>
+      <artifactId>serviceloader-mediator</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

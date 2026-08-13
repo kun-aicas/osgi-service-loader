@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.example</groupId>
+    <artifactId>example</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <name>OSGi Serviceloader OSGi Client Example</name>
+  <groupId>com.aicas.osgi.example</groupId>
+  <artifactId>serviceloader-osgi-client-example</artifactId>
+  <packaging>bundle</packaging>
+  <description>
+    Example OSGi client bundle that retrieves an SPIProvider service from the 
+    OSGi service registry.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>
+              org.osgi.framework;version="[1.6,2)",
+              com.aicas.osgi.spi.example.spi
+            </Import-Package>
+            <Bundle-Activator>com.aicas.osgi.spi.example.client.OsgiClientExampleActivator</Bundle-Activator>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>distribution-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/distribution.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <version>${osgi.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

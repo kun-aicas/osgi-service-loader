@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.example</groupId>
+    <artifactId>example</artifactId>
+    <version>${revision}</version>
+  </parent>
+
+  <name>OSGi ServiceLoader Provider Consumer Example</name>
+  <artifactId>serviceloader-provider-consumer-example</artifactId>
+  <packaging>bundle</packaging>
+  <description>
+    Example bundle that acts as both a Java ServiceLoader provider and a consumer.
+  </description>
+
+  <build>
+    <plugins>
+          <!-- Compile the named module while its dependencies remain on the
+           class path / unnamed module. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerArgs>
+            <arg>--add-reads</arg>
+            <arg>consumer.provider=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Private-Package>
+              com.aicas.osgi.spi.example.consumer,
+              com.aicas.osgi.spi.example.provider
+            </Private-Package>
+            <Include-Resource>
+              module-info.class=${project.build.outputDirectory}/module-info.class
+            </Include-Resource>
+            <Bundle-Activator>com.aicas.osgi.spi.example.consumer.ServiceloaderProviderConsumerExampleActivator</Bundle-Activator>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>distribution-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>src/main/assembly/distribution.xml</descriptor>
+              </descriptors>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <version>${osgi.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi.example</groupId>
+      <artifactId>serviceloader-spi-example</artifactId>
+      <version>${revision}</version>
+    </dependency>
+  </dependencies>
+</project>

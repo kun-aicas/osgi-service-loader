@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.aicas.osgi</groupId>
+  <artifactId>service-loader</artifactId>
+  <version>${revision}</version>
+  <packaging>pom</packaging>
+
+  <name>OSGi Service Loader</name>
+  <description>OSGi service loader mediator</description>
+
+  <modules>
+    <module>serviceloader-weaver</module>
+    <module>serviceloader-mediator</module>
+    <module>serviceloader-itests/testbundles</module>
+    <module>serviceloader-itests</module>
+    <module>example</module>
+  </modules>
+
+  <properties>
+    <revision>1.0.0-SNAPSHOT</revision>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
+
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+    <maven.bundle.plugin.version>6.1.0</maven.bundle.plugin.version>
+    <maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
+    <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+    <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
+
+    <junit.version>4.13.2</junit.version>
+    <easymock.version>5.6.0</easymock.version>
+    <mockito.version>5.23.0</mockito.version>
+    <osgi.core.version>8.0.0</osgi.core.version>
+    <osgi.tracker.version>1.5.4</osgi.tracker.version>
+    <osgi.log.version>1.5.0</osgi.log.version>
+    <asm.version>9.10.1</asm.version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven.failsafe.plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
