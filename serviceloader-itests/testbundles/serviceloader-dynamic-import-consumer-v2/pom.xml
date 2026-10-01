@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.aicas.osgi.testbundle</groupId>
+    <artifactId>testbundles</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>serviceloader-dynamic-import-consumer-v2</artifactId>
+  <packaging>bundle</packaging>
+  <name>OSGi ServiceLoader dynamic-import consumer test bundle</name>
+  <description>
+    Metadata-free ServiceLoader consumer that obtains the version 2 SPI through
+    DynamicImport-Package.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven.bundle.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Private-Package>
+              com.aicas.osgi.spi.example.consumer.dynamicimport.v2
+            </Private-Package>
+            <Bundle-Activator>
+              com.aicas.osgi.spi.example.consumer.dynamicimport.v2.DynamicImportConsumerActivator
+            </Bundle-Activator>
+            <Import-Package>
+              !com.aicas.osgi.spi.example.spi,*
+            </Import-Package>
+            <DynamicImport-Package>
+              com.aicas.osgi.spi.example.spi;version="[2.0,3)"
+            </DynamicImport-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>osgi.core</artifactId>
+      <version>${osgi.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi.testbundle</groupId>
+      <artifactId>serviceloader-spi-v2</artifactId>
+      <version>2.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+</project>

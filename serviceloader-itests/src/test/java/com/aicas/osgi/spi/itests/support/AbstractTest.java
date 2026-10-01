@@ -55,6 +55,8 @@ public abstract class AbstractTest
       "Hi, I was declared by the updated module-info.java revision.";
   protected static final String V2_PROVIDER_MESSAGE =
       "Hello, I was provided by SPI 2.0.";
+  protected static final String DYNAMIC_IMPORT_PROVIDER_V2_MESSAGE =
+      "Hello, I was provided by SPI 2.0 through DynamicImport-Package.";
 
   protected static final String BUNDLE_WEAVER = "serviceloader-weaver";
   protected static final String BUNDLE_MEDIATOR = "serviceloader-mediator";
@@ -63,6 +65,10 @@ public abstract class AbstractTest
   protected static final String BUNDLE_CONSUMER = "serviceloader-consumer";
   protected static final String BUNDLE_CONSUMER_V2 =
       "serviceloader-consumer-v2";
+  protected static final String BUNDLE_DYNAMIC_IMPORT_CONSUMER_V2 =
+      "serviceloader-dynamic-import-consumer-v2";
+  protected static final String BUNDLE_DYNAMIC_IMPORT_PROVIDER_V2 =
+      "serviceloader-dynamic-import-provider-v2";
   protected static final String BUNDLE_CONSUMER_METADATA =
       "serviceloader-consumer-metadata";
   protected static final String BUNDLE_CONSUMER_UPDATE =

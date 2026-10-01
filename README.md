@@ -154,7 +154,7 @@ provider implementation through the provider bundle's class loader.
 When mediation is enabled, `iterator()` returns providers in this order:
 
 1. Visible mediator providers that already have cached instances.
-2. Remaining visible mediator providers.
+2. Remaining visible mediator providers; successfully created instances are cached.
 3. Providers from the Java ServiceLoader delegate.
 
 This combined iterator suppresses duplicate provider classes across the mediator
@@ -166,23 +166,23 @@ warning and skips it so iteration can continue with the next mediator provider.
 The failed entry is removed from the cache. Errors from the Java ServiceLoader
 delegate retain normal JDK behavior.
 
-Provider instances are cached per proxy loader. Before an iterator snapshot is
-built, cached definitions that are no longer visible in the mediator registry
-are removed.
+Mediator provider instances are cached per proxy loader. Each new iterator reads
+the current mediator registry and builds a fresh snapshot of the providers visible
+to the consumer. Later iterators can therefore discover newly registered providers
+and omit providers whose registrations have been removed. An existing iterator
+retains its original snapshot. Cached instances whose definitions are absent from
+a new snapshot are removed.
 
-`reload()` clears both the mediator-provider cache and the Java delegate cache.
+`reload()` clears both the mediator provider cache and the Java delegate cache.
 As with `java.util.ServiceLoader`, obtain a new iterator after calling
 `reload()`.
 
-A later `iterator()` call reads a fresh mediator-registry snapshot and reflects
-tracked provider installations, updates, removals, and fragment attachments.
-An existing iterator retains its original snapshot.
 
-When the proxy loads a selected mediator provider, it starts its resolved but
-stopped host bundle on demand. After the last dependent consumer leaves, the
-mediator can stop an idle host after a grace period. Set the framework property
-`com.aicas.osgi.spi.provider.stop.delay.millis` to a positive delay in
-milliseconds; the default is 50 seconds.
+When the proxy loads a selected mediator provider, it starts the provider’s host
+bundle on demand if it is not already active or starting. After the last dependent
+consumer leaves, the mediator can stop an idle host after a grace period. Set the
+framework property `com.aicas.osgi.spi.provider.stop.delay.millis` to a positive
+delay in milliseconds; the default is 50 seconds.
 
 For `load(Class)`, mediation uses the woven caller's OSGi bundle when it has
 one. For `load(Class, ClassLoader)`, mediation applies only when the requested

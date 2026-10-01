@@ -66,6 +66,16 @@
       <version>${revision}</version>
     </dependency>
     <dependency>
+      <groupId>com.aicas.osgi.testbundle</groupId>
+      <artifactId>serviceloader-dynamic-import-consumer-v2</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aicas.osgi.testbundle</groupId>
+      <artifactId>serviceloader-dynamic-import-provider-v2</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
       <groupId>com.aicas.osgi.example</groupId>
       <artifactId>serviceloader-provider-metadata</artifactId>
       <version>${revision}</version>
@@ -175,6 +185,8 @@
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-spi-v2</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-provider-v2</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-consumer-v2</classpathDependencyExclude>
+            <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-dynamic-import-consumer-v2</classpathDependencyExclude>
+            <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-dynamic-import-provider-v2</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.example:serviceloader-consumer-metadata</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.example:serviceloader-osgi-client</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-embedded-consumer</classpathDependencyExclude>

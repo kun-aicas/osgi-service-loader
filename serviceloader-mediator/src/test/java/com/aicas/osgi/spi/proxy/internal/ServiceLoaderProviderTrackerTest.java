@@ -159,7 +159,7 @@ public class ServiceLoaderProviderTrackerTest
       {
         BundleCapability capability = mock(BundleCapability.class);
         when(capability.getAttributes()).thenReturn(Map.of(BundleRevision.PACKAGE_NAMESPACE,
-                                                           ProviderEntry.packageOf(serviceType)));
+                                                           PackageWiringUtil.packageOf(serviceType)));
         packageCapabilities.add(capability);
       }
 

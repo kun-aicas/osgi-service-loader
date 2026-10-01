@@ -155,6 +155,8 @@ final class OsgiServiceEntry
 
   private List<ServiceRegistrationInfo> serviceRegistrationInfos_;
 
+  /*------------------------  constructors  ---------------------------*/
+
   OsgiServiceEntry(Map<String, Set<String>> impByType,
                    List<ProviderCapability> provideCapabilities)
   {

@@ -56,7 +56,8 @@ BundleTrackerCustomizer<Bundle>
       {
         return null;
       }
-
+    // only the metadata consumer are processed, metadata-free consumer is checked
+    // at runtime.
     registerConsumer(bundle);
     return bundle;
   }

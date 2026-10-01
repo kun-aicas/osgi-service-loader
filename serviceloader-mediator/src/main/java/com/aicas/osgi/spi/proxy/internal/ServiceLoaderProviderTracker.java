@@ -322,7 +322,7 @@ BundleTrackerCustomizer<OsgiServiceEntry>
     for (Map.Entry<String, Set<String>> entry : impByType.entrySet())
       {
         String serviceType = entry.getKey();
-        String pkg = ProviderEntry.packageOf(serviceType);
+        String pkg = PackageWiringUtil.packageOf(serviceType);
         if (pkg.isEmpty())
           {
             continue;
@@ -330,11 +330,7 @@ BundleTrackerCustomizer<OsgiServiceEntry>
         if (!packageCapability.containsKey(pkg))
           {
             BundleCapability capability =
-              ProviderEntry.packageCapability(bundle, pkg);
-            if (capability == null && !pkg.startsWith("java."))
-              {
-                continue;
-              }
+              PackageWiringUtil.effectivePackageCapability(bundle, pkg);
             packageCapability.put(pkg, capability);
           }
         serviceProviderEntries.add(new ProviderEntry(serviceType,

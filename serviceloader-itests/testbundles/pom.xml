@@ -20,6 +20,8 @@
     <module>serviceloader-spi-v2</module>
     <module>serviceloader-provider-v2</module>
     <module>serviceloader-consumer-v2</module>
+    <module>serviceloader-dynamic-import-consumer-v2</module>
+    <module>serviceloader-dynamic-import-provider-v2</module>
     <module>serviceloader-embedded-consumer</module>
     <module>serviceloader-embedded-consumer-bundle</module>
     <module>serviceloader-consumer-update-example</module>
