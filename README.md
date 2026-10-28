@@ -162,11 +162,11 @@ identify that class's OSGi bundle.
 ## Static weaving
 
 Packaging `serviceloader-weaver` also creates an executable
-`serviceloader-weaver-<version>-jar-with-dependencies.jar`. Use it to weave a
+`serviceloader-static-weaver-<version>.jar`. Use it to weave a
 OSGi bundle before installation:
 
 ```text
-java -jar serviceloader-weaver-<version>-jar-with-dependencies.jar input.jar [output-directory]
+java -jar serviceloader-static-weaver-<version>.jar input.jar [output-directory]
 ```
 
 The weaver does not verify JAR signatures, including those in embedded JARs.

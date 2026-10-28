@@ -50,6 +50,9 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <version>${maven.assembly.plugin.version}</version>
         <configuration>
+          <finalName>serviceloader-static-weaver-${project.version}</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
+          <attach>false</attach>
           <archive>
             <manifest>
               <mainClass>com.aicas.osgi.spi.weaver.Main</mainClass>
