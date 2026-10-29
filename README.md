@@ -44,11 +44,15 @@ Build the mediator and the project modules it requires:
 mvn -pl serviceloader-mediator -am package
 ```
 
-Run the integration suite:
+Run the integration suite on both Felix and Equinox:
 
 ```sh
 mvn -pl serviceloader-itests -am verify
 ```
+
+The complete suite runs once per framework in separate JVMs. Reports are written
+under `serviceloader-itests/target/failsafe-reports/felix/` and
+`serviceloader-itests/target/failsafe-reports/equinox/`.
 
 Run the real-world compatibility suite on both Felix and Equinox:
 

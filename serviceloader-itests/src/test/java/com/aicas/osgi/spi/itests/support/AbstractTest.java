@@ -21,11 +21,11 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.jar.Manifest;
 
-import org.apache.felix.framework.FrameworkFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.osgi.framework.Bundle;
@@ -34,13 +34,14 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
+import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.log.Logger;
 import org.osgi.service.log.LoggerFactory;
 
 import com.aicas.osgi.spi.example.spi.SPIProvider;
 
-/** Shared embedded-Felix support for ServiceLoader integration scenarios. */
+/** Shared embedded-OSGi support for ServiceLoader integration scenarios. */
 public abstract class AbstractTest
 {
   protected static final String REGULAR_PROVIDER_MESSAGE =
@@ -119,13 +120,23 @@ public abstract class AbstractTest
     frameworkConfiguration.put(Constants.FRAMEWORK_STORAGE_CLEAN,
                                Constants.FRAMEWORK_STORAGE_CLEAN_ONFIRSTINIT);
     frameworkConfiguration.put(Constants.FRAMEWORK_SYSTEMPACKAGES_EXTRA,
-        "org.osgi.service.log;version=1.5,"
-        + "org.osgi.util.tracker;version=1.5,"
-        + "org.objectweb.asm;version=9.10,"
-        + "org.objectweb.asm.commons;version=9.10,"
-        + "org.objectweb.asm.util;version=9.10");
+                               "org.osgi.service.log;version=1.5," +
+                               "org.osgi.util.tracker;version=1.5," +
+                               "org.objectweb.asm;version=9.10," +
+                               "org.objectweb.asm.commons;version=9.10," +
+                               "org.objectweb.asm.util;version=9.10");
     frameworkConfiguration.putAll(frameworkProperties());
-    framework_ = new FrameworkFactory().newFramework(frameworkConfiguration);
+    List<FrameworkFactory> factories =
+        ServiceLoader.load(FrameworkFactory.class,
+                           AbstractTest.class.getClassLoader()).
+                      stream().map(ServiceLoader.Provider::get).toList();
+    if (factories.size() != 1)
+      {
+        throw new IllegalStateException(
+            "Expected exactly one OSGi FrameworkFactory, found " + factories.size()
+            + ": " + factories);
+      }
+    framework_ = factories.get(0).newFramework(frameworkConfiguration);
     framework_.init();
     context_ = framework_.getBundleContext();
     framework_.start();
@@ -140,7 +151,7 @@ public abstract class AbstractTest
     installTestBundle(BUNDLE_SPI_V2).start();
   }
 
-  /** Cleans framework storage and restores output even when framework shutdown fails. */
+  /** Cleans framework storage and reports captured output even when shutdown fails. */
   @After
   public void stopFramework() throws Exception
   {
@@ -180,6 +191,12 @@ public abstract class AbstractTest
         if (originalOut_ != null)
           {
             System.setOut(originalOut_);
+            // Replay bundle prints to the test runner after assertions have used them.
+            if (output_ != null)
+              {
+                originalOut_.print(output_.toString(StandardCharsets.UTF_8));
+                originalOut_.flush();
+              }
           }
       }
     if (failure instanceof Exception)
@@ -207,8 +224,7 @@ public abstract class AbstractTest
   }
 
   /** Installs a bundle from the integration-test bundle fixtures. */
-  protected Bundle installTestBundle(String bundleArtifact)
-      throws Exception
+  protected Bundle installTestBundle(String bundleArtifact) throws Exception
   {
     return install(bundleArtifact,
                    findBundleJar(Path.of("testbundles", bundleArtifact),
@@ -236,7 +252,7 @@ public abstract class AbstractTest
       }
     CountDownLatch completed = new CountDownLatch(1);
     wiring.refreshBundles(List.of(bundles),
-        (FrameworkEvent event) -> completed.countDown());
+                          (FrameworkEvent event) -> completed.countDown());
     if (!completed.await(5, TimeUnit.SECONDS))
       {
         throw new AssertionError("Timed out while refreshing bundle wirings");
@@ -259,7 +275,7 @@ public abstract class AbstractTest
   protected void awaitBundleState(Bundle bundle,
                                   int expectedState,
                                   long timeoutMillis)
-      throws InterruptedException
+    throws InterruptedException
   {
     long deadline = System.currentTimeMillis() + timeoutMillis;
     do
@@ -276,10 +292,10 @@ public abstract class AbstractTest
   }
 
   protected Bundle install(String bundleArtifact, Class<?> bundleClass)
-      throws Exception
+    throws Exception
   {
-    Path path = Path.of(bundleClass.getProtectionDomain().getCodeSource()
-                            .getLocation().toURI());
+    Path path = Path.of(bundleClass.getProtectionDomain().
+                        getCodeSource().getLocation().toURI());
     if (Files.isDirectory(path))
       {
         path = createBundleJar(path, bundleArtifact + ".jar");
@@ -288,7 +304,7 @@ public abstract class AbstractTest
   }
 
   protected ServiceReference<?> awaitService(String className, boolean present)
-      throws Exception
+    throws Exception
   {
     long deadline = System.currentTimeMillis() + 5000;
     do
@@ -301,7 +317,7 @@ public abstract class AbstractTest
               {
                 Object classes = reference.getProperty(Constants.OBJECTCLASS);
                 if (classes instanceof String[] &&
-                    java.util.Arrays.asList((String[])classes).contains(className))
+                    java.util.Arrays.asList((String[]) classes).contains(className))
                   {
                     match = reference;
                     break;
@@ -320,7 +336,7 @@ public abstract class AbstractTest
 
   /** Waits until the service registry contains the expected number of services. */
   protected int awaitServiceCount(String className, int expectedCount)
-      throws Exception
+    throws Exception
   {
     long deadline = System.currentTimeMillis() + 5000;
     int count;
@@ -337,18 +353,18 @@ public abstract class AbstractTest
     return count;
   }
 
-  private int countServices(String className) throws Exception
+  private int countServices(String className)
+    throws Exception
   {
     int count = 0;
-    ServiceReference<?>[] references =
-        context_.getAllServiceReferences(null, null);
+    ServiceReference<?>[] references = context_.getAllServiceReferences(null, null);
     if (references != null)
       {
         for (ServiceReference<?> reference : references)
           {
             Object classes = reference.getProperty(Constants.OBJECTCLASS);
             if (classes instanceof String[] &&
-                java.util.Arrays.asList((String[])classes).contains(className))
+                java.util.Arrays.asList((String[]) classes).contains(className))
               {
                 count++;
               }
@@ -481,13 +497,12 @@ public abstract class AbstractTest
     Path target = project.resolve("target");
     try (java.util.stream.Stream<Path> paths = Files.list(target))
       {
-        return paths.filter(Files::isRegularFile)
-            .filter(path -> path.getFileName().toString()
-                .startsWith(artifact + "-"))
-            .filter(path -> path.getFileName().toString().endsWith(".jar"))
-            .filter(path -> !path.getFileName().toString().endsWith("-sources.jar"))
-            .findFirst()
-            .orElseThrow(() -> new IOException("Bundle JAR not found for "
+        return paths.filter(Files::isRegularFile).
+            filter(path -> path.getFileName().toString().
+                   startsWith(artifact + "-")).
+            filter(path -> path.getFileName().toString().endsWith(".jar")).
+            filter(path -> !path.getFileName().toString().endsWith("-sources.jar")).
+            findFirst().orElseThrow(() -> new IOException("Bundle JAR not found for "
                                                 + artifact + " in " + target));
       }
   }
@@ -510,8 +525,7 @@ public abstract class AbstractTest
               {
                 continue;
               }
-            output.putNextEntry(new java.util.jar.JarEntry(
-                classes.relativize(path).toString().replace('\\', '/')));
+            output.putNextEntry(new java.util.jar.JarEntry(classes.relativize(path).toString().replace('\\', '/')));
             Files.copy(path, output);
             output.closeEntry();
           }
@@ -523,18 +537,17 @@ public abstract class AbstractTest
   {
     try (java.util.stream.Stream<Path> paths = Files.walk(root))
       {
-        paths.sorted(java.util.Comparator.reverseOrder())
-            .forEach(path ->
+        paths.sorted(java.util.Comparator.reverseOrder()).forEach(path ->
+        {
+          try
             {
-              try
-                {
-                  Files.deleteIfExists(path);
-                }
-              catch (IOException e)
-                {
-                  throw new RuntimeException(e);
-                }
-            });
+              Files.deleteIfExists(path);
+            }
+          catch (IOException e)
+            {
+              throw new RuntimeException(e);
+            }
+        });
       }
   }
 }
