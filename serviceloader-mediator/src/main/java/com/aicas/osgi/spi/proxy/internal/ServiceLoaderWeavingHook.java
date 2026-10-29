@@ -22,6 +22,7 @@ import org.osgi.framework.hooks.weaving.WovenClass;
 import org.osgi.framework.wiring.BundleWiring;
 
 import com.aicas.osgi.spi.weaver.ServiceLoaderWeaver;
+import com.aicas.osgi.spi.weaver.WeavingResult;
 import com.aicas.osgi.spi.weaver.StaticWeavingStatus;
 import com.aicas.osgi.spi.weaver.WeaverConstants;
 
@@ -79,9 +80,9 @@ public class ServiceLoaderWeavingHook implements WeavingHook
       }
 
     byte[] originalBytes = wovenClass.getBytes();
-    ServiceLoaderWeaver.WeavingResult result = ServiceLoaderWeaver.weave(originalBytes);
+    WeavingResult result = ServiceLoaderWeaver.weave(originalBytes);
 
-    if (result.getStatus() != ServiceLoaderWeaver.WeavingResult.Status.WOVEN)
+    if (result.getStatus() != WeavingResult.Status.WOVEN)
       {
         MediatorActivator.logger_.debug("ServiceLoader weaving did not transform " +
                                          wovenClass.getClassName() + ": " +

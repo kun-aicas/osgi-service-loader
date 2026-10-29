@@ -91,7 +91,7 @@ public final class Main
     int len = arguments.length;
     if (len < 1 || len > 2)
       {
-        System.err.println("Usage: java -jar serviceloader-weaver-<version>-jar-with-dependencies.jar " +
+        System.err.println("Usage: java -jar serviceloader-static-weaver-<version>.jar " +
                      "<input-bundle.jar> [output-directory]");
         System.exit(2);
         return;
@@ -116,19 +116,6 @@ public final class Main
         exception.printStackTrace(System.err);
         System.exit(1);
       }
-  }
-
-  /**
-   * Derives the output path in the current working directory without accessing
-   * or creating the output file.
-   *
-   * @param input input bundle path.
-   * @return absolute output path using the {@code -spi-consumer.jar} suffix.
-   * @throws IllegalArgumentException if {@code input} has no file name.
-   */
-  static Path defaultOutputPath(Path input)
-  {
-    return outputPath(input, Path.of(".").toAbsolutePath().normalize());
   }
 
   /**
@@ -504,8 +491,9 @@ public final class Main
    * Invokes the bytecode weaver for one class and records its outcome.
    *
    * <p>Woven bytes replace the entry content and its name is added to the woven
-   * list. Unsupported invocations add the name to the unsupported list while
-   * retaining the original content. Classes with no supported invocation remain
+   * list. Unsupported invocations and unsafe constant-pool replacements add
+   * the name to the unsupported list while retaining the original content.
+   * Classes with no supported invocation remain
    * unchanged. Transformation errors are propagated immediately.</p>
    *
    * @param entry mutable class entry to process.
@@ -516,7 +504,7 @@ public final class Main
   private boolean weaveClass(Entry entry)
     throws Exception
   {
-    ServiceLoaderWeaver.WeavingResult result = ServiceLoaderWeaver.weave(entry.bytes_);
+    WeavingResult result = ServiceLoaderWeaver.weave(entry.bytes_);
     switch (result.getStatus())
       {
       case WOVEN:
@@ -526,6 +514,7 @@ public final class Main
       case NO_SUPPORTED_INVOCATION:
         return false;
       case UNSUPPORTED_INVOCATION:
+      case UNSAFE_CONSTANT_POOL:
         unsupportedClasses.add(entry.name_);
         return false;
       case TRANSFORMATION_ERROR:
