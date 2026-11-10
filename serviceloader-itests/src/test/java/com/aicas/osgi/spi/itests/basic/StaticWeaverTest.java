@@ -127,8 +127,16 @@ public class StaticWeaverTest extends AbstractTest
     awaitOutputContainsAfter(outputOffset, V2_PROVIDER_MESSAGE);
 
     // unsupported class can be called without exception.
-    Class<?> streamConsumer = consumer.loadClass(STREAM_CONSUMER);
-    streamConsumer.getMethod("loadFirstProvider").invoke(null);
+    Class<?> unsupportedApiConsumer = consumer.loadClass(UNSUPPORTED_API_CONSUMER);
+    unsupportedApiConsumer.getMethod("loadFirstProvider").invoke(null);
+    assertEquals(Boolean.TRUE, unsupportedApiConsumer.
+      getMethod("moduleLayerLookupFindsNoOsgiProvider").invoke(null));
+    assertEquals(Boolean.TRUE, unsupportedApiConsumer.
+      getMethod("moduleLayerLookupWithStaticReferenceFindsNoOsgiProvider").invoke(null));
+    assertEquals(Boolean.TRUE, unsupportedApiConsumer.
+      getMethod("installedLookupFindsNoOsgiProvider").invoke(null));
+    assertEquals(Boolean.TRUE, unsupportedApiConsumer.
+      getMethod("installedLookupWithStaticReferenceFindsNoOsgiProvider").invoke(null));
 
     consumer.stop();
     provider.stop();

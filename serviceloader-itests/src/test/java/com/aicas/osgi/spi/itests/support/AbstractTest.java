@@ -73,7 +73,7 @@ public abstract class AbstractTest
   protected static final String BUNDLE_CONSUMER_METADATA =
       "serviceloader-consumer-metadata";
   protected static final String BUNDLE_CONSUMER_UPDATE =
-      "serviceloader-consumer-update-example";
+      "serviceloader-update-consumer";
   protected static final String BUNDLE_EMBEDDED_CONSUMER_BUNDLE =
       "serviceloader-embedded-consumer-bundle";
   protected static final String BUNDLE_OSGI_CLIENT = "serviceloader-osgi-client";
@@ -96,10 +96,12 @@ public abstract class AbstractTest
       "serviceloader-two-service-provider-fragment";
   protected static final String BUNDLE_TWO_SERVICE_PROVIDER_HOST =
       "serviceloader-two-service-provider-host";
+  protected static final String EXPLICIT_CLASS_LOADER_CONSUMER =
+      "com.aicas.osgi.spi.example.consumer.v2.ExplicitClassLoaderConsumer";
   protected static final String SUPPORTED_API_CONSUMER =
       "com.aicas.osgi.spi.example.consumer.v2.SupportedApiConsumer";
-  protected static final String STREAM_CONSUMER =
-      "com.aicas.osgi.spi.example.consumer.v2.StreamConsumer";
+  protected static final String UNSUPPORTED_API_CONSUMER =
+      "com.aicas.osgi.spi.example.consumer.v2.UnsupportedApiConsumer";
 
   private Framework framework_;
   private BundleContext context_;

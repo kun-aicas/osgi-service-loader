@@ -24,7 +24,7 @@
     <module>serviceloader-dynamic-import-provider-v2</module>
     <module>serviceloader-embedded-consumer</module>
     <module>serviceloader-embedded-consumer-bundle</module>
-    <module>serviceloader-consumer-update-example</module>
+    <module>serviceloader-update-consumer</module>
     <module>serviceloader-provider-failure-example</module>
     <module>serviceloader-provider-moduleinfo-update-example</module>
     <module>serviceloader-two-service-provider-fragment</module>

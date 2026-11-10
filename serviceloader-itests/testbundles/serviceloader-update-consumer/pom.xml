@@ -11,7 +11,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>serviceloader-consumer-update-example</artifactId>
+  <artifactId>serviceloader-update-consumer</artifactId>
   <packaging>bundle</packaging>
   <name>OSGi ServiceLoader consumer update test bundle</name>
 

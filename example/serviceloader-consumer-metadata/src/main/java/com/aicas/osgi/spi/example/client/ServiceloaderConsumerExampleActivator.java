@@ -10,6 +10,7 @@ import com.aicas.osgi.spi.example.spi.SPIProvider;
 
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
+import java.util.function.Function;
 
 public class ServiceloaderConsumerExampleActivator
         implements BundleActivator
@@ -18,8 +19,9 @@ public class ServiceloaderConsumerExampleActivator
   public void start(BundleContext context)
   {
     boolean found = false;
-    ServiceLoader<SPIProvider> loader =
-            ServiceLoader.load(SPIProvider.class);
+    Function<Class<SPIProvider>, ServiceLoader<SPIProvider>> load =
+            ServiceLoader::load;
+    ServiceLoader<SPIProvider> loader = load.apply(SPIProvider.class);
     System.out.println("\n [consumer] Get all the registered services:/");
     try
     {

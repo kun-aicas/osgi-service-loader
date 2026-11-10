@@ -93,7 +93,7 @@
     </dependency>
     <dependency>
       <groupId>com.aicas.osgi.testbundle</groupId>
-      <artifactId>serviceloader-consumer-update-example</artifactId>
+      <artifactId>serviceloader-update-consumer</artifactId>
       <version>${revision}</version>
     </dependency>
     <dependency>
@@ -222,7 +222,7 @@
             <classpathDependencyExclude>com.aicas.osgi.example:serviceloader-osgi-client</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-embedded-consumer</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-embedded-consumer-bundle</classpathDependencyExclude>
-            <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-consumer-update-example</classpathDependencyExclude>
+            <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-update-consumer</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.example:serviceloader-provider-metadata</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-provider-update-example</classpathDependencyExclude>
             <classpathDependencyExclude>com.aicas.osgi.testbundle:serviceloader-provider-moduleinfo-update-example</classpathDependencyExclude>
